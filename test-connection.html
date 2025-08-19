@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .test-details {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Supabase Database Connection Test</h1>
+        <p>This page will test your Supabase database connection and verify that all tables are accessible.</p>
+        
+        <button onclick="runConnectionTest()">Test Connection</button>
+        <button onclick="testDatabaseTables()">Test Database Tables</button>
+        <button onclick="testRealTimeConnection()">Test Real-time Features</button>
+        
+        <div id="testResults"></div>
+        
+        <div class="test-details">
+            <h3>What this test checks:</h3>
+            <ul>
+                <li>Supabase client initialization</li>
+                <li>Database connection status</li>
+                <li>Table accessibility (users, students, transactions, etc.)</li>
+                <li>Row Level Security (RLS) policies</li>
+                <li>Real-time subscription capabilities</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+        const SUPABASE_URL = 'https://bculyoqyxhdeverkvhse.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjdWx5b3F5eGhkZXZlcmt2aHNlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1NTczNzAsImV4cCI6MjA3MDEzMzM3MH0.Z-dHEY40-pBsD9m29hjFuwQk4PRksl75jkPkHsmU6mo';
+
+        let supabase;
+        let testResults = document.getElementById('testResults');
+
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            testResults.appendChild(div);
+        }
+
+        function clearResults() {
+            testResults.innerHTML = '';
+        }
+
+        window.runConnectionTest = async function() {
+            clearResults();
+            addResult('🔄 Starting connection test...', 'loading');
+
+            try {
+                // Initialize Supabase client
+                supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                addResult('✅ Supabase client initialized successfully', 'success');
+
+                // Test basic connection
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('count', { count: 'exact', head: true });
+
+                if (error) {
+                    addResult(`❌ Connection failed: ${error.message}`, 'error');
+                    return;
+                }
+
+                addResult('✅ Database connection successful', 'success');
+                addResult(`📊 Users table accessible (${data || 0} records)`, 'info');
+
+            } catch (error) {
+                addResult(`❌ Connection test failed: ${error.message}`, 'error');
+            }
+        };
+
+        window.testDatabaseTables = async function() {
+            if (!supabase) {
+                addResult('❌ Please run connection test first', 'error');
+                return;
+            }
+
+            addResult('🔄 Testing database tables...', 'loading');
+
+            const tables = ['users', 'students', 'transactions', 'money_requests', 'recurring_payments'];
+            
+            for (const table of tables) {
+                try {
+                    const { data, error, count } = await supabase
+                        .from(table)
+                        .select('*', { count: 'exact', head: true });
+
+                    if (error) {
+                        addResult(`❌ ${table} table: ${error.message}`, 'error');
+                    } else {
+                        addResult(`✅ ${table} table accessible (${count || 0} records)`, 'success');
+                    }
+                } catch (error) {
+                    addResult(`❌ ${table} table error: ${error.message}`, 'error');
+                }
+            }
+        };
+
+        window.testRealTimeConnection = async function() {
+            if (!supabase) {
+                addResult('❌ Please run connection test first', 'error');
+                return;
+            }
+
+            addResult('🔄 Testing real-time connection...', 'loading');
+
+            try {
+                const channel = supabase
+                    .channel('test-channel')
+                    .on('postgres_changes', {
+                        event: '*',
+                        schema: 'public',
+                        table: 'users'
+                    }, (payload) => {
+                        addResult('✅ Real-time event received', 'success');
+                    })
+                    .subscribe((status) => {
+                        if (status === 'SUBSCRIBED') {
+                            addResult('✅ Real-time subscription successful', 'success');
+                            // Clean up after 2 seconds
+                            setTimeout(() => {
+                                supabase.removeChannel(channel);
+                            }, 2000);
+                        } else if (status === 'CHANNEL_ERROR') {
+                            addResult('❌ Real-time subscription failed', 'error');
+                        }
+                    });
+
+            } catch (error) {
+                addResult(`❌ Real-time test failed: ${error.message}`, 'error');
+            }
+        };
+
+        // Auto-run connection test on page load
+        window.addEventListener('load', () => {
+            setTimeout(runConnectionTest, 1000);
+        });
+    </script>
+</body>
+</html>
