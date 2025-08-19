@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hapo - Parent Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header-new">
+        <div class="nav-container-new">
+            <div class="nav-brand-new">
+                <img src="logo.jpg" alt="Hapo Logo" class="logo-new">
+                <div class="brand-content-new">
+                    <span class="brand-name-new">Hapo Technology</span>
+                    <span class="brand-tagline-new">Your Money, Your Growth, The Hapo Way!</span>
+                </div>
+            </div>
+            <div class="nav-actions-new">
+                <button class="student-login-btn-new" onclick="window.location.href='index.html'">Back to Home</button>
+                <button class="parent-signup-btn-new" onclick="window.location.href='parentLogin.html'">Sign In</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Signup Section -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Parent Register</h2>
+                    <p>Create your Hapo account to manage your family's finances</p>
+                </div>
+
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                        <span class="error-message" id="firstNameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="surname">Surname</label>
+                        <input type="text" id="surname" name="surname" required>
+                        <span class="error-message" id="surnameError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobileNumber">Mobile Number</label>
+                        <div class="mobile-input-container">
+                            <select id="countryCode" name="countryCode" class="country-code-select">
+                                <option value="+27" data-country="ZA">🇿🇦 +27</option>
+                                <option value="+1" data-country="US">🇺🇸 +1</option>
+                                <option value="+44" data-country="GB">🇬🇧 +44</option>
+                                <option value="+33" data-country="FR">🇫🇷 +33</option>
+                                <option value="+49" data-country="DE">🇩🇪 +49</option>
+                                <option value="+86" data-country="CN">🇨🇳 +86</option>
+                                <option value="+91" data-country="IN">🇮🇳 +91</option>
+                                <option value="+81" data-country="JP">🇯🇵 +81</option>
+                                <option value="+61" data-country="AU">🇦🇺 +61</option>
+                                <option value="+55" data-country="BR">🇧🇷 +55</option>
+                                <option value="+52" data-country="MX">🇲🇽 +52</option>
+                                <option value="+34" data-country="ES">🇪🇸 +34</option>
+                                <option value="+39" data-country="IT">🇮🇹 +39</option>
+                                <option value="+31" data-country="NL">🇳🇱 +31</option>
+                                <option value="+46" data-country="SE">🇸🇪 +46</option>
+                                <option value="+47" data-country="NO">🇳🇴 +47</option>
+                                <option value="+45" data-country="DK">🇩🇰 +45</option>
+                                <option value="+41" data-country="CH">🇨🇭 +41</option>
+                                <option value="+43" data-country="AT">🇦🇹 +43</option>
+                                <option value="+32" data-country="BE">🇧🇪 +32</option>
+                                <option value="+351" data-country="PT">🇵🇹 +351</option>
+                                <option value="+30" data-country="GR">🇬🇷 +30</option>
+                                <option value="+48" data-country="PL">🇵🇱 +48</option>
+                                <option value="+420" data-country="CZ">🇨🇿 +420</option>
+                                <option value="+36" data-country="HU">🇭🇺 +36</option>
+                                <option value="+40" data-country="RO">🇷🇴 +40</option>
+                                <option value="+359" data-country="BG">🇧🇬 +359</option>
+                                <option value="+385" data-country="HR">🇭🇷 +385</option>
+                                <option value="+386" data-country="SI">🇸🇮 +386</option>
+                                <option value="+421" data-country="SK">🇸🇰 +421</option>
+                                <option value="+372" data-country="EE">🇪🇪 +372</option>
+                                <option value="+371" data-country="LV">🇱🇻 +371</option>
+                                <option value="+370" data-country="LT">🇱🇹 +370</option>
+                                <option value="+353" data-country="IE">🇮🇪 +353</option>
+                                <option value="+354" data-country="IS">🇮🇸 +354</option>
+                                <option value="+358" data-country="FI">🇫🇮 +358</option>
+                                <option value="+234" data-country="NG">🇳🇬 +234</option>
+                                <option value="+254" data-country="KE">🇰🇪 +254</option>
+                                <option value="+233" data-country="GH">🇬🇭 +233</option>
+                                <option value="+256" data-country="UG">🇺🇬 +256</option>
+                                <option value="+255" data-country="TZ">🇹🇿 +255</option>
+                                <option value="+263" data-country="ZW">🇿🇼 +263</option>
+                                <option value="+267" data-country="BW">🇧🇼 +267</option>
+                                <option value="+264" data-country="NA">🇳🇦 +264</option>
+                                <option value="+268" data-country="SZ">🇸🇿 +268</option>
+                                <option value="+266" data-country="LS">🇱🇸 +266</option>
+                                <option value="+265" data-country="MW">🇲🇼 +265</option>
+                                <option value="+260" data-country="ZM">🇿🇲 +260</option>
+                                <option value="+258" data-country="MZ">🇲🇿 +258</option>
+                            </select>
+                            <input type="tel" id="mobileNumber" name="mobileNumber" placeholder="123456789" required>
+                        </div>
+                        <span class="error-message" id="mobileNumberError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="error-message" id="emailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="province">Province</label>
+                        <select id="province" name="province" required>
+                            <option value="">Select Province</option>
+                            <option value="EC">Eastern Cape</option>
+                            <option value="FS">Free State</option>
+                            <option value="GP">Gauteng</option>
+                            <option value="KZN">KwaZulu-Natal</option>
+                            <option value="LP">Limpopo</option>
+                            <option value="MP">Mpumalanga</option>
+                            <option value="NC">Northern Cape</option>
+                            <option value="NW">North West</option>
+                            <option value="WC">Western Cape</option>
+                        </select>
+                        <span class="error-message" id="provinceError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                
+                            </button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength"></div>
+                        <span class="error-message" id="passwordError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="password-input">
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">     
+                            </button>
+                        </div>
+                        <span class="error-message" id="confirmPasswordError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <div class="gender-options">
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="male" required>
+                                <span class="radio-custom"></span>
+                                Male
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="female" required>
+                                <span class="radio-custom"></span>
+                                Female
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="gender" value="not-specified" required>
+                                <span class="radio-custom"></span>
+                                Not Specified
+                            </label>
+                        </div>
+                        <span class="error-message" id="genderError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span class="checkbox-custom"></span>
+                            By registering you agree to our <a href="#" class="link">Terms & Conditions</a>
+                        </label>
+                        <span class="error-message" id="termsError"></span>
+                    </div>
+
+                    <button type="submit" class="auth-button" id="signupButton">
+                        <span id="signupButtonText">Create Account</span>
+                        <div class="loading-spinner" id="loadingSpinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </button>
+                </form>
+
+                <!-- Email Verification Form (Hidden by default) -->
+                <div id="emailVerificationForm" class="auth-form" style="display: none;">
+                    <div class="mfa-header">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Verify Your Email Address</h3>
+                        <p>Enter the verification code sent to your email</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="emailVerificationCode">Verification Code</label>
+                        <input type="text" id="emailVerificationCode" name="emailVerificationCode" maxlength="6" placeholder="000000" required>
+                        <span class="error-message" id="emailVerificationError"></span>
+                    </div>
+
+                    <div class="mfa-options">
+                        <button type="button" class="link-button" onclick="resendEmailVerification()">Resend Code</button>
+                        <button type="button" class="link-button" onclick="backToSignup()">Back to Sign Up</button>
+                    </div>
+
+                    <button type="button" class="auth-button" onclick="verifyEmailCode()">
+                        <span id="emailVerifyButtonText">Verify Email</span>
+                        <div class="loading-spinner" id="emailVerifySpinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </button>
+                </div>
+
+                <div class="auth-divider">
+                    <span>or sign up with</span>
+                </div>
+
+                <div class="oauth-buttons">
+                    <button class="oauth-button google" onclick="signUpWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </button>
+                </div>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="parentLogin.html" class="link">Sign in here</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

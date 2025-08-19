@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hapo - Parent Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header-new">
+        <div class="nav-container-new">
+            <div class="nav-brand-new">
+                <img src="logo.jpg" alt="Hapo Logo" class="logo-new">
+                <div class="brand-content-new">
+                    <span class="brand-name-new">Hapo Technology</span>
+                    <span class="brand-tagline-new">Your Money, Your Growth, The Hapo Way!</span>
+                </div>
+            </div>
+            <div class="nav-actions-new">
+                <button class="student-login-btn-new" onclick="window.location.href='index.html'">Back to Home</button>
+                <button class="parent-signup-btn-new" onclick="window.location.href='signup.html'">Sign Up</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to your Hapo parent account</p>
+                </div>
+
+                <!-- Main Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                        <span class="error-message" id="loginEmailError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="password-input">
+                            <input type="password" id="loginPassword" name="password" required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">
+                                
+                            </button>
+                        </div>
+                        <span class="error-message" id="loginPasswordError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <span class="checkbox-custom"></span>
+                            Remember me
+                        </label>
+                    </div>
+
+                    <button type="submit" class="auth-button" id="loginButton">
+                        <span id="loginButtonText">Login</span>
+                        <div class="loading-spinner" id="loginLoadingSpinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </button>
+                </form>
+
+                <!-- MFA Verification Form (Hidden by default) -->
+                <div id="mfaForm" class="auth-form" style="display: none;">
+                    <div class="mfa-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Two-Factor Authentication</h3>
+                        <p>Enter the verification code sent to your device</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mfaCode">Verification Code</label>
+                        <input type="text" id="mfaCode" name="mfaCode" maxlength="6" placeholder="000000" required>
+                        <span class="error-message" id="mfaCodeError"></span>
+                    </div>
+
+                    <div class="mfa-options">
+                        <button type="button" class="link-button" onclick="resendMFA()">Resend Code</button>
+                        <button type="button" class="link-button" onclick="switchMFAMethod()">Use different method</button>
+                    </div>
+
+                    <button type="button" class="auth-button" onclick="verifyMFA()">
+                        <span id="mfaButtonText">Verify</span>
+                        <div class="loading-spinner" id="mfaLoadingSpinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </button>
+
+                    <button type="button" class="auth-button-secondary" onclick="backToLogin()">
+                        Back to Login
+                    </button>
+                </div>
+
+                <div class="auth-divider">
+                    <span>or sign in with</span>
+                </div>
+
+                <div class="oauth-buttons">
+                    <button class="oauth-button google" onclick="signInWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </button>
+                   
+                </div>
+
+                <div class="auth-footer">
+                    <p><a href="#" class="link" onclick="showForgotPassword()">Forgot your password?</a></p>
+                    <p>Don't have an account? <a href="signup.html" class="link">Sign up here</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

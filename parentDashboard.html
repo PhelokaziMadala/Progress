@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hapo - Parent Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header-new">
+        <div class="nav-container-new">
+            <div class="nav-brand-new">
+                <img src="logo.jpg" alt="Hapo Logo" class="logo-new">
+                <div class="brand-content-new">
+                    <span class="brand-name-new">Hapo Technology</span>
+                    <span class="brand-tagline-new">Your Money, Your Growth, The Hapo Way!</span>
+                </div>
+            </div>
+            <div class="nav-actions-new">
+                <div class="user-menu">
+                    <button class="user-menu-button" onclick="toggleUserMenu()" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; cursor: pointer;">
+                        <span id="userName">Welcome, Parent</span>
+                        <i class="fas fa-chevron-down" style="margin-left: 0.5rem;"></i>
+                    </button>
+                    <div class="user-menu-dropdown" id="userMenuDropdown" style="position: absolute; top: 100%; right: 0; background: white; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); min-width: 180px; z-index: 1000; display: none; margin-top: 8px;">
+                        <a href="javascript:void(0)" onclick="showProfile()" style="display: block; padding: 0.75rem 1rem; color: #374151; text-decoration: none; font-size: 0.875rem; border-bottom: 1px solid #f3f4f6; cursor: pointer;">Profile Settings</a>
+                        <a href="javascript:void(0)" onclick="logout()" style="display: block; padding: 0.75rem 1rem; color: #374151; text-decoration: none; font-size: 0.875rem; cursor: pointer;">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard-main" style="padding: 2rem; background: #f8fafc; min-height: calc(100vh - 80px);">
+        <div id="homeSection" class="section-content">
+            <div class="dashboard-container" style="max-width: 1200px; margin: 0 auto;">
+
+                <!-- Balance Cards -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                    <!-- Family Balance Card -->
+                    <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #3b82f6; position: relative;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 48px; height: 48px; background: #3b82f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem;">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div>
+                                <div style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem;">Family Balance</div>
+                                <div style="font-size: 2rem; font-weight: 700; color: #1f2937;" id="familyBalance">$365.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- This Month Card -->
+                    <div style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #10b981; position: relative;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="width: 48px; height: 48px; background: #10b981; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem;">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <div style="color: #6b7280; font-size: 0.875rem; margin-bottom: 0.5rem;">This Month</div>
+                                <div style="font-size: 2rem; font-weight: 700; color: #1f2937;" id="monthlySpending">$98.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions Section -->
+                <div style="margin-bottom: 3rem;">
+                    <h2 style="font-size: 1.5rem; font-weight: 600; color: #1f2937; margin-bottom: 1.5rem;">Quick Actions</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+
+                        <!-- Emergency Fund Transfer -->
+                        <div onclick="showEmergencyFundModal()" style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #ef4444; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
+                                <div style="width: 48px; height: 48px; background: #fef2f2; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #ef4444; font-size: 1.25rem;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <span style="font-weight: 500; color: #1f2937;">Emergency Fund Transfer</span>
+                            </div>
+                        </div>
+
+                        <!-- Recurring Auto Payments -->
+                        <div onclick="showRecurringPaymentsModal()" style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #3b82f6; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
+                                <div style="width: 48px; height: 48px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #3b82f6; font-size: 1.25rem;">
+                                    <i class="fas fa-sync-alt"></i>
+                                </div>
+                                <span style="font-weight: 500; color: #1f2937;">Recurring Auto Payments</span>
+                            </div>
+                        </div>
+
+                        <!-- Wallet Top-up -->
+                        <div onclick="showWalletTopUpModal()" style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #10b981; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
+                                <div style="width: 48px; height: 48px; background: #ecfdf5; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #10b981; font-size: 1.25rem;">
+                                    <i class="fas fa-plus-circle"></i>
+                                </div>
+                                <span style="font-weight: 500; color: #1f2937;">Wallet Top-up</span>
+                            </div>
+                        </div>
+
+                        <!-- Manage Spending Limits -->
+                        <div onclick="showSpendingLimitsModal()" style="background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #f59e0b; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem;">
+                                <div style="width: 48px; height: 48px; background: #fffbeb; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 1.25rem;">
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <span style="font-weight: 500; color: #1f2937;">Manage Spending Limits</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Your Children Section -->
+                <div style="margin-bottom: 3rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; color: #1f2937;">Your Children</h2>
+                        <button onclick="showAddChildModal()" style="background: #0ea5e9; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.875rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background-color 0.2s ease;">
+                            <i class="fas fa-plus"></i>
+                            Add Child
+                        </button>
+                    </div>
+
+                    <div id="childrenList" style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <!-- Child Card - Inam Bhele -->
+                        <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 48px; height: 48px; background: #0ea5e9; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">IB</div>
+                                <div>
+                                    <div style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Inam Bhele</div>
+                                    <div style="color: #6b7280; font-size: 0.875rem;">Active • Weekly limit: $100.00</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 2rem;">
+                                <div style="text-align: right;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin-bottom: 0.25rem;">$140.00</div>
+                                    <div style="color: #6b7280; font-size: 0.75rem;">Available</div>
+                                </div>
+                                <div style="display: flex; gap: 0.75rem;">
+                                    <button onclick="showSendMoneyModal('Inam Bhele')" style="background: #0ea5e9; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                                        Send Money
+                                    </button>
+                                    <button onclick="viewChildActivity('Inam Bhele')" style="background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                                        View Activity
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Child Card - Bukho Madala -->
+                        <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 48px; height: 48px; background: #0ea5e9; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">BM</div>
+                                <div>
+                                    <div style="font-size: 1rem; font-weight: 600; color: #1f2937; margin-bottom: 0.25rem;">Bukho Madala</div>
+                                    <div style="color: #6b7280; font-size: 0.875rem;">Active • Weekly limit: $75.00</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 2rem;">
+                                <div style="text-align: right;">
+                                    <div style="font-size: 1.5rem; font-weight: 700; color: #10b981; margin-bottom: 0.25rem;">$85.00</div>
+                                    <div style="color: #6b7280; font-size: 0.75rem;">Available</div>
+                                </div>
+                                <div style="display: flex; gap: 0.75rem;">
+                                    <button onclick="showSendMoneyModal('Bukho Madala')" style="background: #0ea5e9; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                                        Send Money
+                                    </button>
+                                    <button onclick="viewChildActivity('Bukho Madala')" style="background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease;">
+                                        View Activity
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Safety Alerts Section -->
+                <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.25rem; font-weight: 600; color: #1f2937;">Safety Alerts</h2>
+                        <button onclick="showSafetySettings()" style="background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.75rem; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: background-color 0.2s ease;">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </button>
+                    </div>
+                    <div id="alertsList">
+                        <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0;">
+                            <div style="width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1rem; background: #10b981; color: white;">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-size: 0.875rem; font-weight: 500; color: #1f2937;">All spending within normal patterns</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" style="position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e5e7eb; display: flex; justify-content: space-around; align-items: center; padding: 12px 0; z-index: 1000; box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);">
+        <div class="nav-item active" onclick="showSection('home')" style="display: flex; flex-direction: column; align-items: center; padding: 8px; cursor: pointer; color: #0ea5e9; font-size: 0.75rem; font-weight: 500; min-width: 60px;">
+            <i class="fas fa-home" style="font-size: 1.5rem; margin-bottom: 4px;"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item pay-button" onclick="showSection('pay')" style="background: #0ea5e9; color: white; border-radius: 12px; width: 60px; height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3);">
+            <i class="fas fa-th" style="font-size: 1.5rem;"></i>
+            <span style="font-size: 0.65rem; margin-top: 2px;">Pay</span>
+        </div>
+        <div class="nav-item" onclick="showSection('activity')" style="display: flex; flex-direction: column; align-items: center; padding: 8px; cursor: pointer; color: #6b7280; font-size: 0.75rem; font-weight: 500; min-width: 60px;">
+            <i class="fas fa-chart-line" style="font-size: 1.5rem; margin-bottom: 4px;"></i>
+            <span>Activity</span>
+        </div>
+        <div class="nav-item" onclick="showSection('notifications')" style="display: flex; flex-direction: column; align-items: center; padding: 8px; cursor: pointer; color: #6b7280; font-size: 0.75rem; font-weight: 500; min-width: 60px;">
+            <i class="fas fa-bell" style="font-size: 1.5rem; margin-bottom: 4px;"></i>
+            <span>Notifications</span>
+        </div>
+    </nav>
+
+    <!-- All the existing modals and sections remain the same -->
+    <!-- Send Money Modal -->
+    <div id="sendMoneyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Send Money to <span id="sendMoneyChildName">Child</span></h3>
+                <button class="modal-close" onclick="closeSendMoneyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="sendMoneyForm" class="modal-form">
+                <div class="form-group">
+                    <label for="sendAmount">Enter amount</label>
+                    <input type="number" id="sendAmount" name="sendAmount" placeholder="0.00" min="0" step="0.01" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeSendMoneyModal()">Cancel</button>
+                    <button type="submit" class="send-btn">Send Money</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Emergency Fund Transfer Modal -->
+    <div id="emergencyFundModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Emergency Fund Transfer</h3>
+                <button class="modal-close" onclick="closeEmergencyFundModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="emergencyFundForm" class="modal-form">
+                <div class="form-group">
+                    <label for="emergencyChild">Select child</label>
+                    <select id="emergencyChild" name="emergencyChild" required>
+                        <option value="">Select child</option>
+                        <option value="Inam Bhele">Inam Bhele</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="emergencyAmount">Emergency amount</label>
+                    <input type="number" id="emergencyAmount" name="emergencyAmount" placeholder="0.00" min="0" step="0.01" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeEmergencyFundModal()">Cancel</button>
+                    <button type="submit" class="emergency-btn">Send Emergency Funds</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Wallet Top-up Modal -->
+    <div id="walletTopUpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Wallet Top-up</h3>
+                <button class="modal-close" onclick="closeWalletTopUpModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="walletTopUpForm" class="modal-form">
+                <div class="form-group">
+                    <label for="topupChild">Select child</label>
+                    <select id="topupChild" name="topupChild" required>
+                        <option value="">Select child</option>
+                        <option value="Inam Bhele">Inam Bhele</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="topupAmount">Top-up amount</label>
+                    <input type="number" id="topupAmount" name="topupAmount" placeholder="0.00" min="0" step="0.01" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeWalletTopUpModal()">Cancel</button>
+                    <button type="submit" class="topup-btn">Top-up Wallet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Spending Limits Modal -->
+    <div id="spendingLimitsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Manage Spending Limits</h3>
+                <button class="modal-close" onclick="closeSpendingLimitsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="spendingLimitsForm" class="modal-form">
+                <div class="form-group">
+                    <label for="limitsChild">Select child</label>
+                    <select id="limitsChild" name="limitsChild" required>
+                        <option value="">Select child</option>
+                        <option value="Inam Bhele">Inam Bhele</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dailyLimit">Daily Limit ($)</label>
+                        <input type="number" id="dailyLimit" name="dailyLimit" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="weeklyLimit">Weekly Limit ($)</label>
+                        <input type="number" id="weeklyLimit" name="weeklyLimit" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeSpendingLimitsModal()">Cancel</button>
+                    <button type="submit" class="update-btn">Update Limits</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Recurring Payments Modal -->
+    <div id="recurringPaymentsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Recurring Auto Payments</h3>
+                <button class="modal-close" onclick="closeRecurringPaymentsModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-form">
+                <div class="recurring-list">
+                    <div class="recurring-item">
+                        <div class="recurring-info">
+                            <div class="recurring-title">School Fees</div>
+                            <div class="recurring-details">Monthly • $50.00</div>
+                        </div>
+                        <div class="recurring-status active">Active</div>
+                    </div>
+                    <div class="recurring-item">
+                        <div class="recurring-info">
+                            <div class="recurring-title">Transport Payment</div>
+                            <div class="recurring-details">Weekly • $25.00</div>
+                        </div>
+                        <div class="recurring-status active">Active</div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="add-recurring-btn" onclick="showAddRecurringModal()">
+                        <i class="fas fa-plus"></i>
+                        Add New Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Recurring Payment Modal -->
+    <div id="addRecurringPaymentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Recurring Payment</h3>
+                <button class="modal-close" onclick="closeAddRecurringPaymentModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="addRecurringPaymentForm" class="modal-form">
+                <div class="form-group">
+                    <label for="recurringChild">Select child</label>
+                    <select id="recurringChild" name="recurringChild" required>
+                        <option value="">Select child</option>
+                        <option value="Inam Bhele">Inam Bhele</option>
+                        <option value="Bukho Madala">Bukho Madala</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentType">Payment Type</label>
+                    <select id="paymentType" name="paymentType" required onchange="updatePaymentDescription()">
+                        <option value="">Select payment type</option>
+                        <option value="school_fees">School Fee Auto-payments</option>
+                        <option value="transport">Transport Payments</option>
+                        <option value="lunch_money">Lunch Money Schedules</option>
+                        <option value="custom">Custom Recurring Transfers</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="recurringAmount">Amount ($)</label>
+                        <input type="number" id="recurringAmount" name="recurringAmount" placeholder="0.00" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="frequency">Frequency</label>
+                        <select id="frequency" name="frequency" required>
+                            <option value="">Select frequency</option>
+                            <option value="Daily">Daily</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Bi-weekly">Bi-weekly</option>
+                            <option value="Monthly">Monthly</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" required>
+                </div>
+
+                <div class="form-group" id="customDescriptionGroup" style="display: none;">
+                    <label for="description">Description (for custom payments)</label>
+                    <input type="text" id="description" name="description" placeholder="Enter payment description">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeAddRecurringPaymentModal()">Cancel</button>
+                    <button type="submit" class="create-btn">Create Recurring Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Child Modal -->
+    <div id="addChildModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Child Account</h3>
+                <button class="modal-close" onclick="closeAddChildModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="addChildForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username (optional)</label>
+                    <input type="text" id="username" name="username" placeholder="student@hapo.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="childPassword">Password (optional)</label>
+                    <input type="password" id="childPassword" name="password" placeholder="••••••••">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="weeklyLimit">Weekly Limit ($)</label>
+                        <input type="number" id="weeklyLimit" name="weeklyLimit" placeholder="50" min="0" step="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="dailyLimitAdd">Daily Limit ($)</label>
+                        <input type="number" id="dailyLimitAdd" name="dailyLimit" placeholder="10" min="0" step="1">
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeAddChildModal()">Cancel</button>
+                    <button type="submit" class="create-btn">Create Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Activity Section (Hidden by default) -->
+    <div id="activitySection" class="section-content" style="display: none;">
+        <div class="dashboard-container">
+            <div class="section-header">
+                <h2>Activity & Reports</h2>
+                <button class="view-reports-btn" onclick="showTransactionReports()">
+                    <i class="fas fa-chart-bar"></i>
+                    View Smart Reports
+                </button>
+            </div>
+
+            <div class="activity-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">47</div>
+                        <div class="stat-label">Total Transactions</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-trending-up"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">$289.00</div>
+                        <div class="stat-label">This Month</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-week"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">$45.50</div>
+                        <div class="stat-label">This Week</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detailed-activity-section">
+                <h3>Detailed Transaction History</h3>
+                <div class="activity-filters">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">This Week</button>
+                    <button class="filter-btn">This Month</button>
+                </div>
+
+                <div class="detailed-activity-list">
+                    <div class="detailed-activity-item">
+                        <div class="activity-icon wallet">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-title">Wallet top-up</div>
+                            <div class="activity-subtitle">Inam Bhele</div>
+                            <div class="activity-date">Today, 2:30 PM</div>
+                        </div>
+                        <div class="activity-amount positive">+$50.00</div>
+                    </div>
+
+                    <div class="detailed-activity-item">
+                        <div class="activity-icon transfer">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-title">Money transfer</div>
+                            <div class="activity-subtitle">Inam Bhele</div>
+                            <div class="activity-date">Yesterday, 4:15 PM</div>
+                        </div>
+                        <div class="activity-amount negative">-$25.00</div>
+                    </div>
+
+                    <div class="detailed-activity-item">
+                        <div class="activity-icon emergency">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-title">Emergency fund transfer</div>
+                            <div class="activity-subtitle">Inam Bhele</div>
+                            <div class="activity-date">2 months ago, 1:45 PM</div>
+                        </div>
+                        <div class="activity-amount negative">-$20.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pay (QR) Section (Hidden by default) -->
+    <div id="paySection" class="section-content" style="display: none;">
+        <div class="dashboard-container">
+            <div class="section-header">
+                <h2>QR-Based Payments</h2>
+                <p>Quick, contactless payments through scanning dynamic QR codes</p>
+            </div>
+
+            <div class="qr-payment-options">
+                <div class="qr-option-card" onclick="startQRScan()">
+                    <div class="qr-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Scan QR Code</h3>
+                    <p>Scan merchant QR codes to make instant payments</p>
+                </div>
+            </div>
+
+            <div class="qr-scanner-container" id="qrScannerContainer" style="display: none;">
+                <div class="scanner-header">
+                    <h3>Scan QR Code</h3>
+                    <button class="close-scanner" onclick="closeQRScanner()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="scanner-area">
+                    <div class="scanner-overlay">
+                        <div class="scanner-frame"></div>
+                        <p>Position QR code within the frame</p>
+                    </div>
+                </div>
+                <div class="scanner-actions">
+                    <button class="scanner-btn" onclick="toggleFlash()">
+                        <i class="fas fa-bolt"></i>
+                        Flash
+                    </button>
+                    <button class="scanner-btn" onclick="switchCamera()">
+                        <i class="fas fa-sync-alt"></i>
+                        Switch Camera
+                    </button>
+                </div>
+            </div>
+
+            <div class="recent-qr-payments">
+                <h3>Recent QR Payments</h3>
+                <div class="qr-payment-list">
+                    <div class="qr-payment-item">
+                        <div class="qr-payment-icon">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div class="qr-payment-details">
+                            <div class="qr-payment-title">School Cafeteria</div>
+                            <div class="qr-payment-date">Today, 12:30 PM</div>
+                        </div>
+                        <div class="qr-payment-amount">$8.50</div>
+                    </div>
+
+                    <div class="qr-payment-item">
+                        <div class="qr-payment-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="qr-payment-details">
+                            <div class="qr-payment-title">Local Grocery Store</div>
+                            <div class="qr-payment-date">Yesterday, 3:15 PM</div>
+                        </div>
+                        <div class="qr-payment-amount">$15.75</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Section (Hidden by default) -->
+    <div id="profileSection" class="section-content" style="display: none;">
+        <div class="dashboard-container">
+            <div class="section-header">
+                <h2>Profile Settings</h2>
+                <p>Manage your account and family settings</p>
+            </div>
+
+            <div class="profile-placeholder">
+                <div class="placeholder-icon">
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                <h3>Profile Settings Coming Soon!</h3>
+                <p>Account management, security settings, and family preferences will be available here.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Section (Hidden by default) -->
+    <div id="notificationsSection" class="section-content" style="display: none;">
+        <div class="dashboard-container">
+            <div class="section-header">
+                <h2>Notifications</h2>
+                <p>Money requests from your children</p>
+            </div>
+            <div id="notificationsList" class="notifications-list">
+                <!-- Sample notifications - will be replaced by dynamic content -->
+                <div class="notification-item" onclick="showNotificationDetails(1)">
+                    <div class="notification-icon money">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="notification-details">
+                        <div class="notification-title">Money request from Inam Bhele</div>
+                        <div class="notification-message">Requesting $25.00</div>
+                        <div class="notification-time">30 minutes ago</div>
+                    </div>
+                    <div class="notification-amount">$25.00</div>
+                    <div class="notification-actions">
+                        <button class="read-more-btn" onclick="event.stopPropagation(); showNotificationDetails(1)">View</button>
+                    </div>
+                </div>
+
+                <div class="notification-item" onclick="showNotificationDetails(2)">
+                    <div class="notification-icon emergency">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="notification-details">
+                        <div class="notification-title">Emergency request from Inam Bhele</div>
+                        <div class="notification-message">Requesting $50.00</div>
+                        <div class="notification-time">2 hours ago</div>
+                    </div>
+                    <div class="notification-amount">$50.00</div>
+                    <div class="notification-actions">
+                        <button class="read-more-btn" onclick="event.stopPropagation(); showNotificationDetails(2)">View</button>
+                    </div>
+                </div>
+
+                <div class="notification-item" onclick="showNotificationDetails(3)">
+                    <div class="notification-icon money">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="notification-details">
+                        <div class="notification-title">Money request from Bukho Madala</div>
+                        <div class="notification-message">Requesting $15.00</div>
+                        <div class="notification-time">45 minutes ago</div>
+                    </div>
+                    <div class="notification-amount">$15.00</div>
+                    <div class="notification-actions">
+                        <button class="read-more-btn" onclick="event.stopPropagation(); showNotificationDetails(3)">View</button>
+                    </div>
+                </div>
+
+                <div class="notification-item" onclick="showNotificationDetails(4)">
+                    <div class="notification-icon emergency">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="notification-details">
+                        <div class="notification-title">Emergency request from Bukho Madala</div>
+                        <div class="notification-message">Requesting $30.00</div>
+                        <div class="notification-time">3 hours ago</div>
+                    </div>
+                    <div class="notification-amount">$30.00</div>
+                    <div class="notification-actions">
+                        <button class="read-more-btn" onclick="event.stopPropagation(); showNotificationDetails(4)">View</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- View Request Modal -->
+    <div id="viewRequestModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Money Request Details</h3>
+                <button class="modal-close" onclick="closeViewRequestModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="requestDetails" class="modal-body">
+                <!-- Filled dynamically -->
+            </div>
+            <div class="modal-actions">
+                <button class="decline-btn" onclick="declineRequest()">Decline</button>
+                <button class="approve-btn" onclick="approveRequest()">Approve</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Notifications Sidebar -->
+    <div id="notificationsSidebar" class="notifications-sidebar" style="display: none;">
+        <div class="sidebar-header">
+            <h3>Notifications</h3>
+            <button class="sidebar-close" onclick="closeNotificationsSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="notifications-list-panel">
+                <h4>Money Requests</h4>
+                <div id="sidebarNotificationsList" class="sidebar-notifications-list">
+                    <!-- Notifications will be loaded here -->
+                </div>
+            </div>
+
+            <div id="requestDetailsPanel" class="request-details-panel" style="display: none;">
+                <div class="details-header">
+                    <h4>Request Details</h4>
+                    <button class="back-to-list" onclick="document.getElementById('requestDetailsPanel').style.display='none'">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to List
+                    </button>
+                </div>
+                <div id="sidebarRequestDetails" class="sidebar-request-details">
+                    <!-- Request details will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
+
+    <style>
+    /* Hover effects for quick action cards */
+    [onclick]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    }
+    /* Section Content Styles */
+    .section-content {
+      padding: 0 0 80px 0; /* No top padding, no side padding, bottom padding for nav */
+    }
+
+    .section-content .dashboard-container {
+      padding: 0 2rem; /* Only horizontal padding for content container */
+    }
+    </style>
+</body>
+</html>

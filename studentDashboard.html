@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hapo - Student Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="nav-header">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="logo.jpg" alt="Hapo Logo" class="logo">
+                <div class="brand-content">
+                    <span class="brand-name">Hapo Technology</span>
+                    <span class="brand-tagline">Your Money, Your Growth, The Hapo Way!</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <div class="user-menu">
+                    <button class="user-menu-button" onclick="toggleUserMenu()">
+                        <span id="studentUserName">Welcome, Student</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-menu-dropdown" id="userMenuDropdown">
+                        <a href="#" onclick="showProfile()">Profile Settings</a>
+                        <a href="#" onclick="showNotifications()">Notifications</a>
+                        <a href="#" onclick="logout()">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard-main">
+        <!-- Home Section -->
+        <div id="homeSection" class="section-content">
+            <div class="dashboard-container">
+                <!-- Student Balance Card -->
+                <div class="balance-cards">
+                    <div class="balance-card student-balance">
+                        <div class="balance-icon">
+                            <img src="balance.png" alt="Available Balance" style="width: 32px; height: 32px; object-fit: contain;">
+                        </div>
+                        <div class="balance-content">
+                            <div class="balance-label">Available Balance</div>
+                            <div class="balance-amount" id="studentBalance">$140.00</div>
+                            <button onclick="refreshBalance()" style="background: none; border: 1px solid #ccc; border-radius: 4px; padding: 4px 8px; font-size: 12px; cursor: pointer; margin-top: 4px;">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="balance-card spending-limit">
+                        <div class="balance-icon">
+                             <img src="https://cdn-icons-png.flaticon.com/512/1968/1968750.png" alt="Budget Chart" style="width: 32px; height: 32px; object-fit: contain;">
+                        </div>
+                        <div class="balance-content">
+                            <div class="balance-label">Weekly Limit</div>
+                            <div class="balance-amount" id="weeklyLimit">$100.00</div>
+                            <div class="balance-subtitle" id="weeklySpent">$45.00 spent this week</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions for Students -->
+                <div class="quick-actions-section">
+                    <div class="section-header">
+                        <h2>Quick Actions</h2>
+                    </div>
+                    <div class="quick-actions-grid student-actions">
+                        <button class="quick-action-btn qr-scan" onclick="showSection('pay')">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2489/2489756.png" alt="QR Code Scanner" style="width: 48px; height: 48px; border-radius: 12px;">
+                            <span>Scan QR to Pay</span>
+                        </button>
+                        <button class="quick-action-btn request-money" onclick="showRequestMoneyModal()">
+                            <img src="https://cdn-icons-png.flaticon.com/512/1001/1001371.png" alt="Request Money" style="width: 48px; height: 48px; border-radius: 12px;">
+                            <span>Request Money</span>
+                        </button>
+                        <button class="quick-action-btn view-rewards" onclick="showSection('rewards')">
+                            <img src="https://cdn-icons-png.flaticon.com/512/1304/1304061.png" alt="Rewards Gift" style="width: 48px; height: 48px; border-radius: 12px;">
+                            <span>My Rewards</span>
+                        </button>
+                        <button class="quick-action-btn emergency" onclick="showEmergencyRequestModal()">
+                            <img src="https://cdn-icons-png.flaticon.com/512/564/564619.png" alt="Emergency Money" style="width: 48px; height: 48px; border-radius: 12px;">
+                            <span>Emergency Request</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Spending Overview -->
+                <div class="spending-overview-section">
+                    <div class="section-header">
+                        <h2>Spending Overview</h2>
+                    </div>
+                    <div class="spending-chart">
+                        <div class="spending-categories">
+                            <div class="spending-category">
+                                <div class="category-icon food">
+                                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=40&h=40&fit=crop&crop=center" alt="Food & Dining" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover;">
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name">Food & Dining</div>
+                                    <div class="category-amount">$25.50</div>
+                                </div>
+                                <div class="category-percentage">57%</div>
+                            </div>
+
+                            <div class="spending-category">
+                                <div class="category-icon transport">
+                                    <img src="transportation.png" alt="Transport" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover;">
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name">Transport</div>
+                                    <div class="category-amount">$12.00</div>
+                                </div>
+                                <div class="category-percentage">27%</div>
+                            </div>
+
+                            <div class="spending-category">
+                                <div class="category-icon books">
+                                    <img src="Books.jpg" alt="Books & Supplies" style="width: 32px; height: 32px; border-radius: 6px; object-fit: cover;">
+                                </div>
+                                <div class="category-info">
+                                    <div class="category-name">Books & Supplies</div>
+                                    <div class="category-amount">$7.50</div>
+                                </div>
+                                <div class="category-percentage">16%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2>Transaction History</h2>
+                    </div>
+
+                    <div class="activity-filters">
+                        <button class="filter-btn active" onclick="filterTransactions('all')">All</button>
+                        <button class="filter-btn" onclick="filterTransactions('week')">This Week</button>
+                        <button class="filter-btn" onclick="filterTransactions('month')">This Month</button>
+                        <button class="filter-btn" onclick="filterTransactions('food')">Food</button>
+                        <button class="filter-btn" onclick="filterTransactions('transport')">Transport</button>
+                    </div>
+
+                    <div class="detailed-activity-list" id="detailedActivityList">
+                        <div class="detailed-activity-item">
+                            <div class="activity-icon food">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">School Cafeteria</div>
+                                <div class="activity-date">Today, 12:30 PM</div>
+                            </div>
+                            <div class="activity-amount negative">-$8.50</div>
+                        </div>
+
+                        <div class="detailed-activity-item">
+                            <div class="activity-icon transfer">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">Money received from parent</div>
+                                <div class="activity-date">Yesterday, 4:15 PM</div>
+                            </div>
+                            <div class="activity-amount positive">+$25.00</div>
+                        </div>
+
+                        <div class="detailed-activity-item">
+                            <div class="activity-icon transport">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">Bus Card Top-up</div>
+                                <div class="activity-date">Yesterday, 8:00 AM</div>
+                            </div>
+                            <div class="activity-amount negative">-$12.00</div>
+                        </div>
+
+                        <div class="detailed-activity-item">
+                            <div class="activity-icon food">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">Convenience Store</div>
+                                <div class="activity-date">2 days ago, 3:45 PM</div>
+                            </div>
+                            <div class="activity-amount negative">-$6.75</div>
+                        </div>
+
+                        <div class="detailed-activity-item">
+                            <div class="activity-icon transport">
+                                <i class="fas fa-bus"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">Transport Card Reload</div>
+                                <div class="activity-date">3 days ago, 7:30 AM</div>
+                            </div>
+                            <div class="activity-amount negative">-$15.00</div>
+                        </div>
+
+                        <div class="detailed-activity-item">
+                            <div class="activity-icon transfer">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="activity-details">
+                                <div class="activity-title">Weekly allowance</div>
+                                <div class="activity-date">1 week ago, 9:00 AM</div>
+                            </div>
+                            <div class="activity-amount positive">+$50.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Panel -->
+                <div class="notifications-section">
+                    <div class="section-header">
+                        <h2>Notifications</h2>
+                        <button class="mark-all-read-btn" onclick="markAllNotificationsRead()">
+                            <i class="fas fa-check"></i>
+                            Mark All Read
+                        </button>
+                    </div>
+                    <div class="notifications-list" id="notificationsList">
+                        <div class="notification-item unread">
+                            <div class="notification-icon success">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="notification-details">
+                                <div class="notification-title">Money request approved!</div>
+                                <div class="notification-message">Your request for R40 has been approved by your parent. Check balance.</div>
+                                <div class="notification-time">30 minutes ago</div>
+                            </div>
+                        </div>
+
+                        <div class="notification-item unread">
+                            <div class="notification-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div class="notification-details">
+                                <div class="notification-title">Weekly spending limit reminder</div>
+                                <div class="notification-message">You've spent $45 out of your $100 weekly limit</div>
+                                <div class="notification-time">2 hours ago</div>
+                            </div>
+                        </div>
+
+                        <div class="notification-item">
+                            <div class="notification-icon success">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="notification-details">
+                                <div class="notification-title">Reward earned!</div>
+                                <div class="notification-message">You earned 50 points for staying under budget</div>
+                                <div class="notification-time">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pay (QR) Section -->
+        <div id="paySection" class="section-content" style="display: none;">
+            <div class="dashboard-container">
+                <div class="section-header">
+                    <h2>QR Payments</h2>
+                    <p>Scan QR codes to make instant payments</p>
+                </div>
+
+                <div class="qr-payment-options">
+                    <div class="qr-option-card" onclick="startStudentQRScan()">
+                        <div class="qr-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>Scan to Pay</h3>
+                        <p>Scan merchant QR codes for instant payments</p>
+                    </div>
+                </div>
+
+                <div class="payment-limits-info">
+                    <h3>Payment Limits</h3>
+                    <div class="limits-grid">
+                        <div class="limit-item">
+                            <span class="limit-label">Per Transaction:</span>
+                            <span class="limit-value">$50.00</span>
+                        </div>
+                        <div class="limit-item">
+                            <span class="limit-label">Daily Limit:</span>
+                            <span class="limit-value">$25.00</span>
+                        </div>
+                        <div class="limit-item">
+                            <span class="limit-label">Remaining Today:</span>
+                            <span class="limit-value">$16.50</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qr-scanner-container" id="studentQRScannerContainer" style="display: none;">
+                    <div class="scanner-header">
+                        <h3>Scan QR Code</h3>
+                        <button class="close-scanner" onclick="closeStudentQRScanner()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="scanner-area">
+                        <div class="scanner-overlay">
+                            <div class="scanner-frame"></div>
+                            <p>Position QR code within the frame</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-payments">
+                    <h3>Recent Payments</h3>
+                    <div class="recent-payments-list">
+                        <div class="payment-item">
+                            <div class="payment-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="payment-details">
+                                <div class="payment-title">School Cafeteria</div>
+                                <div class="payment-date">Today, 12:30 PM</div>
+                            </div>
+                            <div class="payment-amount">$8.50</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rewards Section -->
+        <div id="rewardsSection" class="section-content" style="display: none;">
+            <div class="dashboard-container">
+                <div class="section-header">
+                    <h2>My Rewards</h2>
+                    <p>Earn points for responsible spending and saving</p>
+                </div>
+
+                <div class="rewards-summary">
+                    <div class="rewards-card total-points">
+                        <div class="rewards-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="rewards-content">
+                            <div class="rewards-label">Total Points</div>
+                            <div class="rewards-amount" id="totalPoints">1,250</div>
+                        </div>
+                    </div>
+
+                    <div class="rewards-card points-this-month">
+                        <div class="rewards-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="rewards-content">
+                            <div class="rewards-label">Points This Month</div>
+                            <div class="rewards-amount" id="monthlyPoints">350</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements-section">
+                    <h3>Achievements</h3>
+                    <div class="achievements-grid">
+                        <div class="achievement-item earned">
+                            <div class="achievement-icon">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Budget Master</div>
+                                <div class="achievement-desc">Stayed under budget for 1 week</div>
+                                <div class="achievement-points">+100 points</div>
+                            </div>
+                        </div>
+
+                        <div class="achievement-item earned">
+                            <div class="achievement-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Spending Tracker</div>
+                                <div class="achievement-desc">Tracked spending for 7 days</div>
+                                <div class="achievement-points">+50 points</div>
+                            </div>
+                        </div>
+
+                        <div class="achievement-item locked">
+                            <div class="achievement-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="achievement-info">
+                                <div class="achievement-name">Savings Champion</div>
+                                <div class="achievement-desc">Save 20% of allowance for 1 month</div>
+                                <div class="achievement-points">+200 points</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rewards-store">
+                    <h3>Rewards Store</h3>
+                    <div class="rewards-items">
+                        <div class="reward-item">
+                            <div class="reward-icon">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <div class="reward-info">
+                                <div class="reward-name">Extra $5 Allowance</div>
+                                <div class="reward-cost">500 points</div>
+                            </div>
+                            <button class="redeem-btn" onclick="redeemReward('allowance')">Redeem</button>
+                        </div>
+
+                        <div class="reward-item">
+                            <div class="reward-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="reward-info">
+                                <div class="reward-name">Extended Curfew</div>
+                                <div class="reward-cost">750 points</div>
+                            </div>
+                            <button class="redeem-btn" onclick="redeemReward('curfew')">Redeem</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gaming Section -->
+        <div id="gamingSection" class="section-content" style="display: none;">
+            <div class="dashboard-container">
+                <div class="section-header">
+                    <h2>My Games</h2>
+                    <p>Play games to earn rewards and learn financial literacy</p>
+                </div>
+
+                <div class="gaming-placeholder">
+                    <div class="placeholder-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3>Games Coming Soon!</h3>
+                    <p>Memory games, financial literacy challenges, and reward-based gaming will be available here to help you learn while having fun.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profileSection" class="section-content" style="display: none;">
+            <div class="dashboard-container">
+                <div class="section-header">
+                    <h2>My Profile</h2>
+                    <p>View your account information and parent details</p>
+                </div>
+
+                <!-- Profile Information -->
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <div class="avatar-circle" id="profileAvatar">
+                                IB
+                            </div>
+                        </div>
+                        <div class="profile-basic-info">
+                            <h3 id="profileName">Inam Bhele</h3>
+                            <p class="profile-status">Student Account • Active</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-sections">
+                        <!-- Personal Information -->
+                        <div class="profile-section">
+                            <h4><i class="fas fa-user"></i> Personal Information</h4>
+                            <div class="profile-fields">
+                                <div class="profile-field">
+                                    <label>Full Name</label>
+                                    <div class="profile-value" id="profileFullName">Inam Bhele</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Username</label>
+                                    <div class="profile-value" id="profileUsername">inam@hapo.com</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Account Email</label>
+                                    <div class="profile-value" id="profileEmail">inam@hapo.com</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Account Password</label>
+                                    <div class="profile-value password-masked">••••••••••</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Account Status</label>
+                                    <div class="profile-value status active">Active</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Account Created</label>
+                                    <div class="profile-value" id="profileCreated">January 15, 2024</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Parent Information -->
+                        <div class="profile-section">
+                            <h4><i class="fas fa-users"></i> Parent Information</h4>
+                            <div class="profile-fields">
+                                <div class="profile-field">
+                                    <label>Parent's Full Name</label>
+                                    <div class="profile-value" id="parentFullName">John Bhele</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Emergency Contact Number</label>
+                                    <div class="profile-value" id="parentPhone">+27 123 456 789</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Parent's Email</label>
+                                    <div class="profile-value" id="parentEmail">john.bhele@email.com</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Relationship</label>
+                                    <div class="profile-value">Parent/Guardian</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account Settings -->
+                        <div class="profile-section">
+                            <h4><i class="fas fa-cog"></i> Account Settings</h4>
+                            <div class="profile-fields">
+                                <div class="profile-field">
+                                    <label>Weekly Spending Limit</label>
+                                    <div class="profile-value" id="profileWeeklyLimit">$100.00</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Daily Spending Limit</label>
+                                    <div class="profile-value" id="profileDailyLimit">$25.00</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Current Balance</label>
+                                    <div class="profile-value balance" id="profileBalance">$140.00</div>
+                                </div>
+                                <div class="profile-field">
+                                    <label>Notifications</label>
+                                    <div class="profile-value">Enabled</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Notice -->
+                    <div class="security-notice">
+                        <div class="notice-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="notice-content">
+                            <h5>Account Security</h5>
+                            <p>Your account information is managed by your parent/guardian. If you need to update any personal information or have security concerns, please contact your parent or guardian.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Request Money Modal -->
+    <div id="requestMoneyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Request Money</h3>
+                <button class="modal-close" onclick="closeRequestMoneyModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="requestMoneyForm" class="modal-form">
+                <div class="form-group">
+                    <label for="requestAmount">Amount needed</label>
+                    <input type="number" id="requestAmount" name="requestAmount" placeholder="0.00" min="0" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="requestReason">Reason (optional)</label>
+                    <textarea id="requestReason" name="requestReason" placeholder="What do you need this money for?" rows="3"></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeRequestMoneyModal()">Cancel</button>
+                    <button type="submit" class="request-btn">Send Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Emergency Request Modal -->
+    <div id="emergencyRequestModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Emergency Fund Request</h3>
+                <button class="modal-close" onclick="closeEmergencyRequestModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="emergencyRequestForm" class="modal-form">
+                <div class="form-group">
+                    <label for="emergencyAmount">Emergency amount needed</label>
+                    <input type="number" id="emergencyAmount" name="emergencyAmount" placeholder="0.00" min="0" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="emergencyReason">Emergency reason</label>
+                    <textarea id="emergencyReason" name="emergencyReason" placeholder="Describe your emergency situation" rows="4" required></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeEmergencyRequestModal()">Cancel</button>
+                    <button type="submit" class="emergency-request-btn">Send Emergency Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showSection('home')">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item pay-button" onclick="showSection('pay')">
+            <i class="fas fa-qrcode"></i>
+            <span>Pay</span>
+        </div>
+        <div class="nav-item" onclick="showSection('rewards')">
+            <i class="fas fa-star"></i>
+            <span>Rewards</span>
+        </div>
+        <div class="nav-item" onclick="showSection('gaming')">
+            <i class="fas fa-gamepad"></i>
+            <span>My Games</span>
+        </div>
+        <div class="nav-item" onclick="showSection('profile')">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </div>
+    </nav>
+
+    <script src="supabase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
