@@ -276,6 +276,25 @@ class HapoDatabase {
         }
     }
 
+    async getStudentById(studentId) {
+        try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
+            const { data, error } = await this.supabase
+                .from('students')
+                .select('*')
+                .eq('id', studentId)
+                .single();
+
+            if (error) throw error;
+            return { success: true, data };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    }
+
     async updateStudentBalance(studentId, newBalance) {
         try {
             if (!this.supabase) {
