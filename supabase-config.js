@@ -22,16 +22,153 @@ class HapoDatabase {
         this.supabase = supabase;
     }
 
+    // Authentication Methods
+    async signUp(email, password, userData) {
+        try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
+            // Create auth user first
+            const { data: authData, error: authError } = await this.supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    emailRedirectTo: window.location.origin
+                }
+            });
+
+            if (authError) throw authError;
+
+            // Create user record in our users table
+            if (authData.user) {
+                const userRecord = {
+                    id: authData.user.id,
+                    full_name: userData.fullName,
+                    email: email,
+                    password_hash: 'managed_by_supabase_auth',
+                    user_type: userData.userType || 'parent',
+                    email_verified: false,
+                    mfa_enabled: true,
+                    created_at: new Date().toISOString()
+                };
+
+                const { data: userInsert, error: userError } = await this.supabase
+                    .from('users')
+                    .insert([userRecord])
+                    .select();
+
+                if (userError) {
+                    console.error('Error creating user record:', userError);
+                    // Don't throw here as auth user was created successfully
+                }
+
+                return { success: true, data: authData, user: userInsert?.[0] };
+            }
+
+            return { success: true, data: authData };
+        } catch (error) {
+            console.error('Error in signUp:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async signIn(email, password) {
+        try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
+            const { data, error } = await this.supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) throw error;
+
+            // Get user record from our users table
+            if (data.user) {
+                const { data: userRecord, error: userError } = await this.supabase
+                    .from('users')
+                    .select('*')
+                    .eq('id', data.user.id)
+                    .single();
+
+                if (userError) {
+                    console.error('Error fetching user record:', userError);
+                }
+
+                return { success: true, data, user: userRecord };
+            }
+
+            return { success: true, data };
+        } catch (error) {
+            console.error('Error in signIn:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async signOut() {
+        try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
+            const { error } = await this.supabase.auth.signOut();
+            if (error) throw error;
+
+            return { success: true };
+        } catch (error) {
+            console.error('Error in signOut:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
+    async getCurrentUser() {
+        try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
+            const { data: { user }, error } = await this.supabase.auth.getUser();
+            if (error) throw error;
+
+            if (user) {
+                // Get user record from our users table
+                const { data: userRecord, error: userError } = await this.supabase
+                    .from('users')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+
+                if (userError) {
+                    console.error('Error fetching user record:', userError);
+                }
+
+                return { success: true, user, userRecord };
+            }
+
+            return { success: true, user: null };
+        } catch (error) {
+            console.error('Error getting current user:', error);
+            return { success: false, error: error.message };
+        }
+    }
+
     // User Management
     async createUser(userData) {
         try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
             const { data, error } = await this.supabase
                 .from('users')
                 .insert([{
                     id: userData.id,
                     full_name: userData.fullName,
                     email: userData.email,
-                    password_hash: userData.password,
+                    password_hash: 'managed_by_supabase_auth',
                     user_type: userData.userType || 'parent',
                     email_verified: userData.emailVerified || false,
                     mfa_enabled: userData.mfaEnabled || true,
@@ -39,6 +176,7 @@ class HapoDatabase {
                 }])
                 .select();
 
+            if (error) throw error;
             return { success: true, data };
         } catch (error) {
             console.error('Error creating user:', error);
@@ -48,6 +186,10 @@ class HapoDatabase {
 
     async getUserByEmail(email) {
         try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
             const { data, error } = await this.supabase
                 .from('users')
                 .select('*')
@@ -64,15 +206,22 @@ class HapoDatabase {
     // Student Management
     async createStudent(studentData) {
         try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
+            // Generate a unique ID for the student
+            const studentId = 'student_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
             const { data, error } = await this.supabase
                 .from('students')
                 .insert([{
-                    id: studentData.id,
+                    id: studentId,
                     parent_id: studentData.parentId,
                     first_name: studentData.firstName,
                     last_name: studentData.lastName,
                     username: studentData.username,
-                    password_hash: studentData.password,
+                    password_hash: studentData.password || 'default_password_hash',
                     balance: studentData.balance || 0,
                     weekly_limit: studentData.weeklyLimit || 50,
                     daily_limit: studentData.dailyLimit || 10,
@@ -81,6 +230,7 @@ class HapoDatabase {
                 }])
                 .select();
 
+            if (error) throw error;
             return { success: true, data };
         } catch (error) {
             console.error('Error creating student:', error);
@@ -90,6 +240,10 @@ class HapoDatabase {
 
     async getStudentsByParent(parentId) {
         try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
             const { data, error } = await this.supabase
                 .from('students')
                 .select('*')
@@ -98,12 +252,17 @@ class HapoDatabase {
             if (error) throw error;
             return { success: true, data };
         } catch (error) {
+            console.error('Error fetching students:', error);
             return { success: false, error: error.message };
         }
     }
 
     async getStudentByUsername(username) {
         try {
+            if (!this.supabase) {
+                throw new Error('Supabase not initialized');
+            }
+
             const { data, error } = await this.supabase
                 .from('students')
                 .select('*')
