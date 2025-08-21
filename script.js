@@ -179,6 +179,9 @@ async function handleStudentLogin(event) {
                 // Simple password check (in production, use proper hashing)
                 if (result.data.password_hash === password || password === 'student123') {
                     currentStudent = result.data;
+                    try {
+                        localStorage.setItem('currentStudentId', currentStudent.id);
+                    } catch (e) {}
                     showSuccess('Login successful!');
                     setTimeout(() => {
                         window.location.href = 'studentDashboard.html';
@@ -263,10 +266,20 @@ async function initializeDashboard() {
     
     if (window.location.pathname.includes('studentDashboard.html')) {
         if (!currentStudent) {
-            window.location.href = 'studentLogin.html';
-            return;
+            const savedId = localStorage.getItem('currentStudentId');
+            if (savedId && window.hapoDb) {
+                const studentLookup = await window.hapoDb.getStudentById(savedId);
+                if (studentLookup.success) {
+                    currentStudent = studentLookup.data;
+                }
+            }
+            if (!currentStudent) {
+                window.location.href = 'studentLogin.html';
+                return;
+            }
         }
         updateStudentDashboard();
+        setupStudentRealtime();
     }
 }
 
@@ -536,6 +549,55 @@ document.addEventListener('click', function(event) {
         dropdown.style.display = 'none';
     }
 });
+
+// Student dashboard updates
+function updateStudentDashboard() {
+    const balanceEl = document.getElementById('studentBalance');
+    const profileBalanceEl = document.getElementById('profileBalance');
+    const weeklyLimitEl = document.getElementById('weeklyLimit');
+    const profileWeeklyLimitEl = document.getElementById('profileWeeklyLimit');
+    const studentUserNameEl = document.getElementById('studentUserName');
+
+    if (!currentStudent) return;
+
+    if (studentUserNameEl) studentUserNameEl.textContent = `Welcome, ${currentStudent.first_name}`;
+    if (balanceEl) balanceEl.textContent = `$${Number(currentStudent.balance).toFixed(2)}`;
+    if (profileBalanceEl) profileBalanceEl.textContent = `$${Number(currentStudent.balance).toFixed(2)}`;
+    if (weeklyLimitEl) weeklyLimitEl.textContent = `$${Number(currentStudent.weekly_limit).toFixed(2)}`;
+    if (profileWeeklyLimitEl) profileWeeklyLimitEl.textContent = `$${Number(currentStudent.weekly_limit).toFixed(2)}`;
+}
+
+async function refreshBalance() {
+    try {
+        if (!currentStudent || !window.hapoDb) return;
+        const { success, data, error } = await window.hapoDb.getStudentById(currentStudent.id);
+        if (success && data) {
+            currentStudent = data;
+            updateStudentDashboard();
+        } else if (error) {
+            console.error('Failed to refresh balance:', error);
+        }
+    } catch (e) {
+        console.error('Refresh balance error:', e);
+    }
+}
+
+function setupStudentRealtime() {
+    try {
+        if (!currentStudent || !window.hapoDb) return;
+        window.hapoDb.subscribeToStudentUpdates(currentStudent.id, (payload) => {
+            if (payload?.new) {
+                currentStudent = payload.new;
+                updateStudentDashboard();
+            } else {
+                // fallback: fetch fresh state
+                refreshBalance();
+            }
+        });
+    } catch (e) {
+        console.warn('Realtime subscription failed, falling back to manual refresh');
+    }
+}
 
 // Placeholder functions for features not yet implemented
 function showProfile() {
